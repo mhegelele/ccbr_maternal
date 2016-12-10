@@ -1,0 +1,36 @@
+{% extends 'questionnaire/base.html' %}
+{% load staticfiles widget_tweaks %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>
+                        {% if not form.instance.pk %}
+                            Create Form
+                        {% else %}
+                            Edit {{ form.instance.name }} Form
+                        {% endif %}
+                    </h5>
+                </div>
+                <div class="ibox-content">
+                    <form role="form" class="form-horizontal" action="{{ action }}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="{{ form.name.id_for_label }}" class="control-label col-sm-2` sr-only">Form name</label>
+                            <div class="col-sm-10">
+                                <div class="input-group m-b">
+                                    {% render_field form.name class+="form-control" placeholder+="Enter form name" %}
+                                    <span class="input-group-btn">
+                                        <button type="submit" class="btn btn-primary">Go!</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

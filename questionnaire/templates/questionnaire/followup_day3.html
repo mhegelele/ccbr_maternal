@@ -1,0 +1,149 @@
+{% extends 'questionnaire/base.html' %}
+{% load staticfiles %}
+
+{% block page-actions %}
+    <div class="title-action">
+
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Wakina Mama Wanaotakiwa Kukumbushwa Kurudi Kliniki</h5>
+                    <div class="ibox-tools">
+                        <button type="button" class="btn btn-default">Print <i class="fa fa-print"></i></button>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-5 m-b-xs">
+                            <div class="input-group date" id="date_filter">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <input type="text" class="form-control" value="{{ date }}">
+                            </div>
+                        </div>
+                    </div>
+                    {% if not selected_contacts %}
+                        <div class="row">
+                            <div class="text-info text-center text-bold">
+                                There is no list to call.
+                            </div>
+                        </div>
+                    {% else %}
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Relative's Phone</th>
+                                <th>Called?</th>
+                                <th>Available?</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for contact in selected_contacts %}
+                                <tr class="client" data-clientid="{{ contact.id }}">
+                                    <td>{{ contact.client_id }}</td>
+                                    <td>{{ contact.name }}</td>
+                                    <td>{{ contact.phone }}</td>
+                                    <td>{{ contact.phone_relative }}</td>
+                                    <td>
+                                        <input type="checkbox"  class="i-checks" name="called" data-clientid="{{ contact.id }}"
+                                        {% if contact.called %} value="True" checked {% else %} value="False" {% endif %} />
+                                    </td>
+                                    <td>
+                                        <input type="checkbox"  class="i-checks" name="available" data-clientid="{{ contact.id }}"
+                                        {% if contact.available %} value="True" checked {% else %} value="False" {% endif %} />
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block extrajs %}
+    <script src="{% static 'bootstrap/js/plugins/bootstrap-datepicker.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#date_filter').datepicker({
+                todayBtn: "linked",
+                keyboardNavigation: false,
+                forceParse: false,
+                calendarWeeks: true,
+                autoclose: true
+            });
+
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green'
+            });
+
+            $('input:checkbox').on('ifChanged', function () {
+                var id = $(this).attr('data-clientid');
+                var field = $(this).attr('name');
+                if(this.checked) {
+                    $(this).val('True');
+                    var value = $(this).val();
+                }
+                else {
+                    $(this).val('False');
+                    var value = $(this).val();
+                }
+                $.ajax({
+                    url: "{% url 'reminders' %}",
+                    type: "POST",
+                    data: {
+                        id: id,
+                        field: field,
+                        value: value
+                    },
+                    success: function () {
+                        
+                    },
+                    error: function () {
+                        
+                    }
+                });
+            });
+
+            // CSRF
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie != '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = jQuery.trim(cookies[i]);
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            var csrftoken = getCookie('csrftoken');
+
+            function csrfSafeMethod(method) {
+                // these HTTP methods do not require CSRF protection
+                return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+            }
+            $.ajaxSetup({
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

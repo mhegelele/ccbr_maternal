@@ -1,0 +1,47 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NIMR | {% block title %}Dashboard{% endblock %}</title>
+
+    {% block css %}
+        <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
+        <link href="{% static 'inspinia/css/animate.css' %}" rel="stylesheet">
+        <link href="{% static 'inspinia/css/style.css' %}" rel="stylesheet">
+    {% endblock %}
+
+</head>
+
+<body class="gray-bg">
+
+<div class="middle-box text-center animated fadeInDown">
+    <h1>
+        {% block err-code %}
+
+        {% endblock %}
+    </h1>
+    <h3 class="font-bold">
+        {% block err-message %}
+
+        {% endblock %}
+    </h3>
+    <div class="error-desc">
+        {% block errd-esc %}
+
+        {% endblock %}
+    </div>
+</div>
+
+{% block js %}
+    <script src="{% static 'jquery/js/jquery-2.2.4.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+{% endblock %}
+</body>
+
+</html>

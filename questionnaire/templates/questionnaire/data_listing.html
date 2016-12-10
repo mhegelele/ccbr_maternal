@@ -1,0 +1,54 @@
+{% extends 'questionnaire/base.html' %}
+{% load staticfiles %}
+
+{% block page-actions %}
+    <div class="title-action">
+        <div class="btn-group btn-group-sm">
+            <a href="{% url 'data-create' form.slug %}" class="btn btn-white btn-sm">
+                <i class="fa fa-plus-circle"></i> Enter Data
+            </a>
+            {% if user.is_superuser %}
+                <a href="{% url  'form-update' form.slug %}" class="btn btn-white btn-sm">
+                    <i class="fa fa-edit"></i> Edit Form
+                </a>
+                <a href="{% url  'data-export' form.slug %}" class="btn btn-white btn-sm">
+                    <i class="fa fa-external-link"></i> Export Data
+                </a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-9">
+            {% if not data_forms %}
+                <div class="middle-box text-center">
+                    <h3 class="font-bold">No data at this time</h3>
+                    <div class="text-info">
+                        There is no data in the system.
+                        You can start entering data by clicking the below button.
+                        <br /> <a href="{% url 'data-create' form.slug %}" class="btn btn-primary m-t">Enter Data</a>
+                    </div>
+                </div>
+            {% else %}
+                {% for data_form in data_forms %}
+                    <div class="file-box">
+                        <div class="file">
+                            <a href="{% url 'data-update' form.slug data_form.uuid %}">
+                                <span class="corner"></span>
+                                <div class="icon">
+                                    <i class="fa fa-file"></i>
+                                </div>
+                                <div class="file-name">
+                                    Form ID: {{ data_form.form_id }}
+                                    <br /> <small>Added: {{ data_form.created|date }}</small>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

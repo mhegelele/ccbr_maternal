@@ -1,0 +1,9 @@
+/* Ace Editor*/
+#editor {
+  height: 350px;
+}
+
+.fb-selected {
+    box-shadow: 0 0 10px #004b92;
+    border-collapse: separate;
+}

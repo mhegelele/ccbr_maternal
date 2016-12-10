@@ -1,0 +1,74 @@
+{% extends 'questionnaire/base.html' %}
+
+{% block page-actions %}
+    <div class="title-action">
+        <a href="{% url 'form-create' %}" class="btn btn-white btn-sm"><i class="fa fa-plus-circle"></i> Add Form</a>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-9">
+            {% if not form_list %}
+                <div class="middle-box text-center">
+                    <h3 class="font-bold">No defined form!</h3>
+                    <div class="text-info">
+                        There is no any defined form in the system.
+                        {% if user.is_superuser %}
+                            You can start defining forms by clicking the below button.
+                            <br /> <a href="{% url 'form-create' %}" class="btn btn-primary m-t">Create Form</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% else %}
+                {% for form in form_list %}
+                    <div class="file-box">
+                        <div class="file">
+                            <a href="{% url 'data-listing' form.slug %}">
+                                <span class="corner"></span>
+                                <div class="icon">
+                                    <i class="fa fa-file"></i>
+                                </div>
+                                <div class="file-name">
+                                    {{ form.name }}
+                                    <br />
+                                    <small>Added: {{ form.created|date }}</small>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% comment %}<div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Today's Calls</h5>
+                </div>
+                <div class="ibox-content">
+                    {% if not call_list %}
+                        <h3 class="font-bold text-center">No calls today!</h3>
+                    {% else %}
+                        <table class="table table-hover no-margins">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for call in call_list %}
+                                    <tr>
+                                        <td>{{ call.name }}</td>
+                                        <td>{{ call.phone }}</td>
+                                    </tr>
+                                {% endfor %}
+
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </div>
+            </div>
+        </div>{% endcomment %}
+    </div>
+{% endblock %}
