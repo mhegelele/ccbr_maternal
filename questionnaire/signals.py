@@ -10,7 +10,7 @@ def enroll_client(sender, **kwargs):
     instance = kwargs['instance']
     form_name = instance.form.name
     clinic = instance.data['clinic']
-    if created and form_name == "Labor and Delivery Register" and clinic != 'OTHER':
+    if created and form_name == "Labor and Delivery Register" and instance.data['clinic'] != 'OTHER':
         EnrolledClients.objects.create(
             uuid=instance.uuid,
             client_id=instance.client_id,
