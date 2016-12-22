@@ -68,7 +68,7 @@ class FormData(models.Model):
                 ids.append(datetime.strptime(self.data[key], "%m/%d/%Y %H:%M:%S").date().strftime('%d%m%Y'))
             else:
                 ids.append(self.data[key])
-        self.client_id = ''.join(ids)
+        self.client_id = '-'.join(ids)
         super(FormData, self).save(*args, **kwargs)
 
 
