@@ -85,8 +85,9 @@ class EnrolledClients(models.Model):
     called = models.BooleanField(_('Contacted?'), default=False)
     available = models.BooleanField(_('Available?'), default=False)
     came_day7 = models.BooleanField(_('Came to clinic at 7th day after delivery?'), default=False)
-    came_day14 = models.BooleanField(_('Came to clinic at 14th day after delivery?'), default=False)
     came_day28 = models.BooleanField(_('Came to clinic at 28th day after delivery?'), default=False)
+    called_on_missed_visit2 = models.BooleanField(_('Called on missed visit 2?'), default=False)
+    available_on_missed_visit2 = models.BooleanField(_('Available on missed visit 2 call?'), default=False)
 
     def __str__(self):
         return "{}: {}".format(self.name, self.phone)

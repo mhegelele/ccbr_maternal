@@ -69,6 +69,28 @@ def followup_day7(request):
 
 
 @login_required
+def missed_visit2(request):
+    eleven_days_ago = datetime.now() - timedelta(days=11)
+    clients = EnrolledClients.objects.filter(delivery_date__lte=eleven_days_ago).filter(came_day7=False)
+    if request.method == "POST" and request.is_ajax():
+        field = request.POST.get('field')
+        value = request.POST.get('value')
+        if field == "called_on_missed_visit2":
+            EnrolledClients.objects.filter(id=int(request.POST.get('id'))).update(
+                called_on_missed_visit2=value
+            )
+        elif field == "available_on_missed_visit2":
+            EnrolledClients.objects.filter(id=int(request.POST.get('id'))).update(
+                available_on_missed_visit2=value
+            )
+        return HttpResponse(content_type="application/json")
+    return render(
+        request, 'questionnaire/missed_visit2.html',
+        {'clients': clients}
+    )
+
+
+@login_required
 def followup_day28(request):
     min_dt = datetime.now().date() - timedelta(days=33)
     max_dt = datetime.now().date() - timedelta(days=28)
@@ -176,7 +198,7 @@ def export_form_data(request, slug):
             datetime.now().strftime("%Y%m%d_%H%M%S")
         )
 
-        header = filled_forms[-1]['data'].keys() + ['time']
+        header = filled_forms[-1]['data'].keys() + ['time'] + ['cannula_in_situ'] + ['feedback'] + ['outcome_maternal'] + ['outcome_neonatal']
         writer = csv.DictWriter(response, header)
         writer.writeheader()
         writer.writerows([filled_form['data'] for filled_form in filled_forms])
