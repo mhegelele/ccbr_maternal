@@ -66,7 +66,7 @@ WSGI_APPLICATION = 'ccbrt_mane.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ccbrt_amana',
+        'NAME': 'ccbrt_mane',
         'USER': 'admin',
         'PASSWORD': 'admin',
         'HOST': 'localhost',
