@@ -1,4 +1,5 @@
 static
+bin
 .idea
 .env
 *.pyc
