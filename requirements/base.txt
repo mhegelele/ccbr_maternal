@@ -23,6 +23,5 @@ requests==2.10.0
 simplejson==3.8.1
 six==1.10.0
 stevedore==1.15.0
-vboxapi==1.0
 gunicorn
 setproctitle
