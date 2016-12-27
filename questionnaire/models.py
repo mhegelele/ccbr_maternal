@@ -39,6 +39,10 @@ class FormConfig(models.Model):
                 'data': form.data,
                 'created': form.created
             }
+
+            if form.interview_date:
+                data_form['form_id'] = '-'.join([form.client_id, form.interview_date.date().strftime('%d%m%Y')])
+
             if not data_form['form_id']:
                 data_form['form_id'] = form.uuid
             data_forms.append(data_form)
@@ -51,6 +55,7 @@ class FormData(models.Model):
     client_id = models.CharField(_('ID'), max_length=30, editable=False, null=True)
     form = models.ForeignKey(FormConfig)
     data = JSONField(default={})
+    interview_date = models.DateTimeField(_('Interview Date'), null=True)
     created = models.DateTimeField(_('Created'), auto_now_add=True)
     updated = models.DateTimeField(_('Updated'), auto_now=True)
     user = models.ForeignKey(User)
@@ -70,6 +75,8 @@ class FormData(models.Model):
             else:
                 ids.append(self.data[key])
         self.client_id = '-'.join(ids)
+        if self.form.schema['properties'].get('interview_date'):
+            self.interview_date = datetime.strptime(self.data['interview_date'], "%d/%m/%Y %H:%M:%S")
         super(FormData, self).save(*args, **kwargs)
 
 
