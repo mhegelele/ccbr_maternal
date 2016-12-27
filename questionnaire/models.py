@@ -65,7 +65,7 @@ class FormData(models.Model):
         for key in self.form.schema.get('unique'):
             field_format = self.form.schema['properties'][key].get('format')
             if field_format == 'datetime' or field_format == 'date':
-                ids.append(datetime.strptime(self.data[key], "%m/%d/%Y %H:%M:%S").date().strftime('%d%m%Y'))
+                ids.append(datetime.strptime(self.data[key], "%d/%m/%Y %H:%M:%S").date().strftime('%d%m%Y'))
             else:
                 ids.append(self.data[key])
         self.client_id = '-'.join(ids)

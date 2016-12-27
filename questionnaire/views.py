@@ -56,7 +56,7 @@ def followup_day7(request):
             )
         return HttpResponse(content_type="application/json")
     elif request.method == "GET" and request.is_ajax():
-        picked_date = datetime.strptime(request.GET.get('datePicked'), "%m/%d/%Y").date()
+        picked_date = datetime.strptime(request.GET.get('datePicked'), "%d/%m/%Y").date()
         min_dt = picked_date - timedelta(days=10)
         max_dt = picked_date - timedelta(days=7)
         clients = EnrolledClients.objects.filter(delivery_date__in=(min_dt, max_dt)).filter(came_day7=False)
@@ -103,7 +103,7 @@ def followup_day28(request):
             )
         return HttpResponse(content_type="application/json")
     elif request.method == "GET" and request.is_ajax():
-        picked_date = datetime.strptime(request.GET.get('datePicked'), "%m/%d/%Y").date()
+        picked_date = datetime.strptime(request.GET.get('datePicked'), "%d/%m/%Y").date()
         min_dt = picked_date - timedelta(days=10)
         max_dt = picked_date - timedelta(days=7)
         clients = EnrolledClients.objects.filter(delivery_date__in=(min_dt, max_dt)).filter(came_day7=False)
@@ -198,7 +198,7 @@ def export_form_data(request, slug):
             datetime.now().strftime("%Y%m%d_%H%M%S")
         )
 
-        header = filled_forms[-1]['data'].keys() + ['time'] + ['cannula_in_situ'] + ['feedback'] + ['outcome_maternal'] + ['outcome_neonatal']
+        header = filled_forms[0]['data'].keys()
         writer = csv.DictWriter(response, header)
         writer.writeheader()
         writer.writerows([filled_form['data'] for filled_form in filled_forms])

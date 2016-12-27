@@ -17,13 +17,13 @@ def enroll_client(sender, **kwargs):
             name=instance.data['name'],
             phone=instance.data['phone'],
             phone_relative=instance.data['phone_relative'],
-            delivery_date=datetime.strptime(instance.data['delivery_date'], "%m/%d/%Y %H:%M:%S").date()
+            delivery_date=datetime.strptime(instance.data['delivery_date'], "%d/%m/%Y %H:%M:%S").date()
         )
-    elif form_name == "Labor and Delivery Register" and clinic != 'OTHER':
+    elif form_name == "Labor and Delivery Register" and instance.data['clinic'] != 'OTHER':
         EnrolledClients.objects.filter(uuid=instance.uuid).update(
             client_id=instance.client_id,
             name=instance.data['name'],
             phone=instance.data['phone'],
             phone_relative=instance.data['phone_relative'],
-            delivery_date=datetime.strptime(instance.data['delivery_date'], "%m/%d/%Y %H:%M:%S").date()
+            delivery_date=datetime.strptime(instance.data['delivery_date'], "%d/%m/%Y %H:%M:%S").date()
         )
