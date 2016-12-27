@@ -53,6 +53,7 @@ class FormData(models.Model):
     data = JSONField(default={})
     created = models.DateTimeField(_('Created'), auto_now_add=True)
     updated = models.DateTimeField(_('Updated'), auto_now=True)
+    user = models.ForeignKey(User)
 
     def __str__(self):
         return str(self.uuid)

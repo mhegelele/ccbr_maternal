@@ -180,6 +180,7 @@ def form_display(request, slug, uuid=None):
     if request.method == "POST":
         dataform.data = request.POST
         dataform.form = form
+        dataform.user = request.user
         dataform.save()
         return redirect(reverse('data-listing', kwargs={'slug': form.slug}))
     return render(request, 'questionnaire/form_display.html', {
